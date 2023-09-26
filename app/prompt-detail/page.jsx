@@ -10,19 +10,19 @@ const PromptDetail = () => {
   const searchParams = useSearchParams();
   const postId = searchParams.get("prompt");
 
+  const fetchPost = async () => {
+    const response = await fetch(`/api/prompt/${postId}`);
+    const data = await response.json();
+    setPost(data);
+  }
+
+  const fetchComments = async () => {
+    const response = await fetch(`/api/comment/${postId}`);
+    const data = await response.json();
+    setComments(data);
+  }
+
   useEffect(() => {
-    const fetchPost = async () => {
-      const response = await fetch(`/api/prompt/${postId}`);
-      const data = await response.json();
-      setPost(data);
-    }
-
-    const fetchComments = async () => {
-      const response = await fetch(`/api/comment/${postId}`);
-      const data = await response.json();
-      setComments(data);
-    }
-
     fetchPost();
     fetchComments();
   }, [])
