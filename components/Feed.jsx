@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 
 import PromptCard from '@components/PromptCard';
 import PromptCardSkeleton from '@components/Skeletons/PromptCardSkeleton';
@@ -101,21 +101,25 @@ const Feed = ({open, setOpen, setPost}) => {
       
       <div className='flex flex-col items-center w-full justify-evenly columns-3'>
         {SearchedResults.length === 0 ? (
-          <PromptCardList
-            data={Posts}
-            handleTagClick={handleTagClick}
-            open={open}
-            setOpen={setOpen}
-            setPost={setPost}
-          />
+          <Suspense fallback={<PromptCardSkeleton />}>
+            <PromptCardList
+              data={Posts}
+              handleTagClick={handleTagClick}
+              open={open}
+              setOpen={setOpen}
+              setPost={setPost}
+              />
+          </Suspense>
         ) : (
+          <Suspense fallback={<PromptCardSkeleton />}>
             <PromptCardList
               data={SearchedResults}
               handleTagClick={handleTagClick}
               open={open}
               setOpen={setOpen}
               setPost={setPost}
-          />
+              />
+          </Suspense>
         )}
       </div>
   </>

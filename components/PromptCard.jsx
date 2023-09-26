@@ -139,7 +139,7 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete, delay, ope
             {comments.length}
             <MessageIcon
               sx={{ color: blue[500] }}
-              className={post.creator._id !== session?.user.id && 'cursor-pointer'}
+              className={post.creator._id !== session?.user.id ? 'cursor-pointer' : 'cursor-not-allowed'}
               onClick={handleCommentClick}
             />
           </div>
