@@ -52,12 +52,13 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete, delay, ope
     setTimeout(() => setCopied(""), 2000)
   }
 
+  const getComments = async () => {
+    const response = await fetch(`/api/comment/${post._id}`);
+    const data = await response.json();
+    setComments(data);
+  }
+
   useEffect(() => {
-    const getComments = async () => {
-      const response = await fetch(`/api/comment/${post._id}`);
-      const data = await response.json();
-      setComments(data);
-    }
     getComments();
   }, [open])
 
