@@ -1,10 +1,6 @@
 import { Schema, model, models } from 'mongoose';
 
 const CommentSchema = new Schema({
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-    },
     creator: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -27,6 +23,7 @@ const CommentSchema = new Schema({
     },
     updateAt: {
         type: Date,
+        default: Date.now,
     },
 });
 

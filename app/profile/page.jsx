@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
-import Profile from './components/profile';
+import Profile from '@/components/profile';
 
 const MyProfile = () => {
     const router = useRouter();
@@ -36,7 +36,7 @@ const MyProfile = () => {
                     method: "DELETE",
                 });
 
-                const filteredPosts = posts.filter((item) => item._id !== post._id);
+                const filteredPosts = Posts.filter((item) => item._id !== post._id);
 
                 setPosts(filteredPosts);
             } catch (error) {

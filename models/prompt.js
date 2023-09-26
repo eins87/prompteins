@@ -19,6 +19,7 @@ const PromptSchema = new Schema({
     },
     updateAt: {
         type: Date,
+        default: Date.now,
     },
 });
 

@@ -53,13 +53,14 @@ const ModalPopup = ({ open, handleClose, post }) => {
       const response = await fetch(`/api/comment/new/`, {
         method: 'POST',
         body: JSON.stringify({
-          user: post.creator._id,
           creator: session?.user.id,
           prompt: post._id,
           comment: Comment,
-          rating: Value,
+          rating: Value
         })
       });
+
+      console.log(response);
       
       if (!response.ok) {
         handleClose();
