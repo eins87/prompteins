@@ -3,7 +3,6 @@
 import { useState, useEffect, Suspense } from 'react'
 
 import PromptCard from '@components/PromptCard';
-import PromptCardSkeleton from '@components/Skeletons/PromptCardSkeleton';
 
 import { useSpring, animated } from '@react-spring/web';
 
@@ -20,7 +19,7 @@ const PromptCardList = ({data, handleTagClick, open, setOpen, setPost}) => {
             setOpen={setOpen}
             setPost={setPost}
             delay={(index+1) * 300}
-            />
+          />
           )
         )
       }
@@ -100,18 +99,16 @@ const Feed = ({open, setOpen, setPost}) => {
       </div>
       
       <div className='flex flex-col items-center w-full justify-evenly columns-3'>
+        
         {SearchedResults.length === 0 ? (
-          <Suspense fallback={<PromptCardSkeleton />}>
             <PromptCardList
               data={Posts}
               handleTagClick={handleTagClick}
               open={open}
               setOpen={setOpen}
               setPost={setPost}
-              />
-          </Suspense>
-        ) : (
-          <Suspense fallback={<PromptCardSkeleton />}>
+            />
+          ) : (
             <PromptCardList
               data={SearchedResults}
               handleTagClick={handleTagClick}
@@ -119,9 +116,8 @@ const Feed = ({open, setOpen, setPost}) => {
               setOpen={setOpen}
               setPost={setPost}
               />
-          </Suspense>
-        )}
-      </div>
+          )}
+      </div>     
   </>
   )
 }

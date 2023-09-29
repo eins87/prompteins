@@ -5,7 +5,11 @@ const nextConfig = {
     serverComponentsExternalPackages: ["mongoose"],
   },
   images: {
+    minimumCacheTTL: 60,
     formats: ['image/avif', 'image/webp'],
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     domains: ['lh3.googleusercontent.com'],
   },
   webpack(config) {

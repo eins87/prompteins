@@ -1,11 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
 
 import { labelsStar, getLabelText } from '@utils/constants/constants';
+
+import PromptCardSkeleton from '@components/Skeletons/PromptCardSkeleton';
+
+// import static icons
+import tick from '@public/assets/icons/tick.svg';
+import copy from '@public/assets/icons/copy.svg';
 
 import Divider from '@mui/material/Divider';
 import Rating from '@mui/material/Rating';
@@ -76,32 +82,30 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete, delay, ope
   return (
     <>
       <animated.div className='prompt_card' style={{ ...springPrompt }}>
-        <div className='flex items-start justify-between flex-1 gap-5'>
-          <div className='flex items-center justify-start flex-1 gap-3 cursor-pointer' onClick={handleProfileClick}> 
-            <Image
-              src={post.creator.image}
-              alt='user_image'
-              width={48}
-              height={48}
-              className='object-contain rounded-full'
-            />
-            <div className='flex flex-col font-satoshi'>
-              <h3 className='text-gray-900 text-md'>{post.creator.username}</h3>
-              <p className='text-sm text-gray-500'>{post.creator.email}</p>
+        <Suspense fallback={<PromptCardSkeleton />}>
+          <div className='flex items-start justify-between flex-1 gap-5'>
+            <div className='flex items-center justify-start flex-1 gap-3 cursor-pointer' onClick={handleProfileClick}> 
+              <Image
+                src={post.creator.image}
+                alt='user_image'
+                width={48}
+                height={48}
+                className='object-contain rounded-full'
+              />
+              <div className='flex flex-col font-satoshi'>
+                <h3 className='text-gray-900 text-md'>{post.creator.username}</h3>
+                <p className='text-sm text-gray-500'>{post.creator.email}</p>
+              </div>
+            </div>
+            <div className='copy_btn' onClick={handleCopy} >
+              <Image
+                src={copied === post.prompt ? tick : copy }
+                width={12}
+                height={12}
+                alt="copy_icon"
+              />
             </div>
           </div>
-          <div className='copy_btn' onClick={handleCopy} >
-            <Image
-              src={copied === post.prompt
-                ? '/assets/icons/tick.svg'
-                : '/assets/icons/copy.svg'
-              }
-              width={12}
-              height={12}
-              alt="copy_icon"
-            />
-          </div>
-        </div>
         
         <Divider variant='inset' className='mt-2' />
       
@@ -149,17 +153,18 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete, delay, ope
         {session?.user?.id === post.creator._id && pathName === "/profile" && (
           <div className='flex items-center justify-between w-full gap-3 pt-4 font-inter'>
             <div className='flex justify-start w-1/2'>
-              <Button variant='outlined' startIcon={<EditIcon />} onClick={handleEdit}>
-                Edit
-              </Button>
+                <Button variant='outlined' startIcon={<EditIcon />} onClick={handleEdit}>
+                  Edit
+                </Button>
+            </div>
+            <div className='flex justify-end w-1/2'>
+                <Button variant='outlined' startIcon={<DeleteIcon/>} onClick={handleDelete}>
+                  Delete
+                </Button>
+            </div>
           </div>
-          <div className='flex justify-end w-1/2'>
-              <Button variant='outlined' startIcon={<DeleteIcon/>} onClick={handleDelete}>
-              Delete
-            </Button>
-          </div>
-        </div>
-      )}
+        )}
+      </Suspense>
     </animated.div>
   </>
   )

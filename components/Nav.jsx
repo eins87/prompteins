@@ -2,8 +2,11 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
+
+import logo from '@public/assets/images/logo.svg';
+import loading from '@app/Loading'
 
 const Nav = () => {
   const { data: session } = useSession();
@@ -23,8 +26,8 @@ const Nav = () => {
     <nav className='w-full pt-3 mb-16 flex-between'>
       <Link href="/" className='flex gap -2 flex-center'>
         <Image
-          priority={true}
-          src="/assets/images/logo.svg"
+          priority
+          src={logo}
           alt="Prompteins_Logo"
           width={30}
           height={30}
@@ -50,7 +53,8 @@ const Nav = () => {
             <Link href="/profile">
               <Image
                 src={session?.user.image}
-                width={37} height={37}
+                width={37}
+                height={37}
                 className='rounded-full'
                 alt="profile" />
             </Link>
@@ -75,7 +79,7 @@ const Nav = () => {
             </>
         )}
       </div>
-      
+    
       {/* mobile nav */}
       <div className="relative flex sm:hidden">
         {session?.user ? (
