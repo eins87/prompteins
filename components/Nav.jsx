@@ -6,7 +6,6 @@ import { useState, useEffect, Suspense } from 'react';
 import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
 
 import logo from '@public/assets/images/logo.svg';
-import loading from '@app/Loading'
 
 const Nav = () => {
   const { data: session } = useSession();
