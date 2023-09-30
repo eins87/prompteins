@@ -1,19 +1,20 @@
 "use client";
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect } from 'react'
 
 import PromptCard from '@components/PromptCard';
 
 import { useSpring, animated } from '@react-spring/web';
 
-const PromptCardList = ({data, handleTagClick, open, setOpen, setPost}) => {
+const PromptCardList = ({ posts, comments, handleTagClick, open, setOpen, setPost }) => {
   return (
     <div className='prompt_layout'>
-      {data.length !== 0
-        && data.map((post, index) => (
+      {posts.length !== 0
+        && posts.map((post, index) => (
           <PromptCard
             key={post._id}
             post={post}
+            filterComment={comments.filter((comment) => comment.prompt === post._id)}
             handleTagClick={handleTagClick}
             open={open}
             setOpen={setOpen}
@@ -29,17 +30,26 @@ const PromptCardList = ({data, handleTagClick, open, setOpen, setPost}) => {
 
 const Feed = ({open, setOpen, setPost}) => {
   const [Posts, setPosts] = useState([]);
+  const [Comments, setComments] = useState([]);
   const [SearchText, setSearchText] = useState("")
   const [SearchTimeout, setSearchTimeout] = useState(null);
   const [SearchedResults, setSearchedResults] = useState([]);
 
+  const fetchPosts = async () => {
+    const response = await fetch('/api/prompt');
+    const data = await response.json();
+    setPosts(data);
+  }
+
+  const fetchComments = async () => {
+    const response = await fetch('/api/comment');
+    const data = await response.json();
+    setComments(data);
+  }
+
   useEffect(() => { 
-    const fetchPosts = async () => {
-      const response = await fetch('/api/prompt');
-      const data = await response.json();
-      setPosts(data);
-    }
     fetchPosts();
+    fetchComments();
   }, []);
   
   const filterPrompts = (searchtext) => {
@@ -101,16 +111,18 @@ const Feed = ({open, setOpen, setPost}) => {
       <div className='flex flex-col items-center w-full justify-evenly columns-3'>
         
         {SearchedResults.length === 0 ? (
-            <PromptCardList
-              data={Posts}
-              handleTagClick={handleTagClick}
-              open={open}
-              setOpen={setOpen}
-              setPost={setPost}
-            />
+          <PromptCardList
+            posts={Posts}
+            comments={Comments}
+            handleTagClick={handleTagClick}
+            open={open}
+            setOpen={setOpen}
+            setPost={setPost}
+          />
           ) : (
             <PromptCardList
-              data={SearchedResults}
+              posts={SearchedResults}
+              comments={Comments}
               handleTagClick={handleTagClick}
               open={open}
               setOpen={setOpen}

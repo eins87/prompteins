@@ -9,7 +9,8 @@ export const labelsStar = {
   3.5: 'Good',
   4: 'Good+',
   4.5: 'Excellent',
-  5: 'Excellent+',
+  4.75: 'Excellent+',
+  5: 'Excellent++',
 };
 
 export const getLabelText = (value) => `${value} Star${value !== 1 ? 's' : ''}, ${labelsStar[value]}`;

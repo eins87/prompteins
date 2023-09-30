@@ -28,12 +28,11 @@ import { toast } from 'react-toastify';
 
 import { useSpring, animated } from '@react-spring/web';
 
-const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete, delay, open, setOpen, setPost }) => {
+const PromptCard = ({ post, filterComment, handleTagClick, handleEdit, handleDelete, delay, setOpen, setPost }) => {
   const { data: session } = useSession();
   const pathName = usePathname();
   const router = useRouter();
   const [copied, setCopied] = useState("");
-  const [comments, setComments] = useState([])
 
   const handleProfileClick = () => {
     if (post.creator._id === session?.user.id) return router.push("/profile");
@@ -57,16 +56,6 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete, delay, ope
     navigator.clipboard.writeText(post.prompt);
     setTimeout(() => setCopied(""), 2000)
   }
-
-  const getComments = async () => {
-    const response = await fetch(`/api/comment/${post._id}`);
-    const data = await response.json();
-    setComments(data);
-  }
-
-  useEffect(() => {
-    getComments();
-  }, [open])
 
   const springPrompt = useSpring({
     from: { opacity: 0, y: 200 },
@@ -129,18 +118,18 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete, delay, ope
             <Rating
               readOnly={true}
               name="hover-feedback"
-              value={comments.map((comment) => comment.rating).reduce((a, b) => a + b, 0) / comments.length}
+              value={filterComment.map((comment) => comment.rating).reduce((a, b) => a + b, 0) / filterComment.length}
               precision={0.5}
               getLabelText={getLabelText}
               emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
             />
-            {comments.rating !== null && (
-              <Box sx={{ ml: 2 }}>{labelsStar[comments.map((comment) => comment.rating).reduce((a, b) => a + b, 0) / comments.length]}</Box>
+            {filterComment.length > 0 && (
+              <Box sx={{ ml: 2 }}>{labelsStar[filterComment.map((comment) => comment.rating).reduce((a, b) => a + b, 0) / filterComment.length]}</Box>
             )}
           </Box>
           
           <div className='flex items-center justify-end flex-1 w-full gap-1'>
-            {comments.length}
+            {filterComment.length}
             <MessageIcon
               sx={{ color: blue[500] }}
               className={post.creator._id !== session?.user.id ? 'cursor-pointer' : 'cursor-not-allowed'}
@@ -163,7 +152,7 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete, delay, ope
                 </Button>
             </div>
           </div>
-        )}
+          )}
       </Suspense>
     </animated.div>
   </>
