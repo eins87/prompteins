@@ -6,7 +6,7 @@ import PromptCard from '@components/PromptCard';
 
 import { useSpring, animated } from '@react-spring/web';
 
-const PromptCardList = ({ posts, comments, handleTagClick, open, setOpen, setPost }) => {
+const PromptCardList = ({ posts, comments, handleTagClick, setOpen, setPost }) => {
   return (
     <div className='prompt_layout'>
       {posts.length !== 0
@@ -16,7 +16,6 @@ const PromptCardList = ({ posts, comments, handleTagClick, open, setOpen, setPos
             post={post}
             filterComment={comments.filter((comment) => comment.prompt === post._id)}
             handleTagClick={handleTagClick}
-            open={open}
             setOpen={setOpen}
             setPost={setPost}
             delay={(index+1) * 300}
@@ -50,7 +49,7 @@ const Feed = ({open, setOpen, setPost}) => {
   useEffect(() => { 
     fetchPosts();
     fetchComments();
-  }, []);
+  }, [open]);
   
   const filterPrompts = (searchtext) => {
     const regex = new RegExp(searchtext, "i");
@@ -115,7 +114,6 @@ const Feed = ({open, setOpen, setPost}) => {
             posts={Posts}
             comments={Comments}
             handleTagClick={handleTagClick}
-            open={open}
             setOpen={setOpen}
             setPost={setPost}
           />
@@ -124,7 +122,6 @@ const Feed = ({open, setOpen, setPost}) => {
               posts={SearchedResults}
               comments={Comments}
               handleTagClick={handleTagClick}
-              open={open}
               setOpen={setOpen}
               setPost={setPost}
               />

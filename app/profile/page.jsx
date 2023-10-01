@@ -10,15 +10,25 @@ const MyProfile = () => {
     const router = useRouter();
     const { data: session } = useSession();
     const [Posts, setPosts] = useState([])
+    const [Comments, setComments] = useState([])
+
+    const fetchPosts = async () => {
+        const response = await fetch(`/api/users/${session?.user.id}/posts`);
+        const data = await response.json();
+        setPosts(data);
+    }
+
+    const fetchComments = async () => {
+        const response = await fetch('/api/comment');
+        const data = await response.json();
+        setComments(data);
+    }
 
     useEffect(() => {
-        const fetchPosts = async () => {
-            const response = await fetch(`/api/users/${session?.user.id}/posts`);
-            const data = await response.json();
-            setPosts(data);
+        if (session?.user.id) {
+            fetchPosts();
+            fetchComments()
         }
-
-        if (session?.user.id) fetchPosts();
     }, [session?.user.id]);
 
     const handleEdit = async (post) => {
@@ -45,7 +55,7 @@ const MyProfile = () => {
         }
     }
 
-    const handleSession = (posts) => {
+    const handleSession = (posts, comments) => {
         if (posts.length > 0) {
             return (
                 <section className='w-full'>
@@ -53,6 +63,7 @@ const MyProfile = () => {
                         name="My"
                         desc={`Hi ${session?.user.name}, Welcome to your personalized profile page.`}
                         data={posts}
+                        dataComments={comments}
                         handleEdit={handleEdit}
                         handleDelete={handleDelete}
                     />
@@ -71,7 +82,7 @@ const MyProfile = () => {
     }
 
     return (
-        session?.user ? handleSession(Posts) : (
+        session?.user ? handleSession(Posts, Comments) : (
             <div className='flex flex-col items-center justify-center h-screen'>
                 <p className='text-2xl font-satoshi'>Please sign in to view your profile.</p>
                 <button type="button" className='mt-5 black_btn' onClick={() => router.push("/")}>

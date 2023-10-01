@@ -13,19 +13,22 @@ const UserProfile = () => {
   // get user profile
   const [userProfile, setUserProfile] = useState([]);
 
-  useEffect(() => {
-    if (!userName) return toast.error("User not found");
-    const getUserProfile = async () => {
-      const response = await fetch(`/api/users/${userName}`);
-      const data = await response.json();
-      setUserProfile(data);
-    };
+  if (!userName) return toast.error("User not found");
+  
+  const getUserProfile = async () => {
+    const response = await fetch(`/api/users/${userName}`);
+    const data = await response.json();
+    setUserProfile(data);
+  };
 
+  useEffect(() => {
     getUserProfile();
   }, []);
 
   return (
+    <>
       <Profile_pic userProfile={userProfile} />
+    </>
   )
 }
 

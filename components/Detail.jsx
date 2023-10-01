@@ -6,6 +6,10 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image'
 import Divider from '@mui/material/Divider';
 
+// import static icons
+import tick from '@public/assets/icons/tick.svg';
+import copy from '@public/assets/icons/copy.svg';
+
 const CommentList = ({ comments, handleProfileClick }) => {
   return (
       comments.map(
@@ -82,8 +86,8 @@ const Detail = ({ post, comments, desc }) => {
         <div className='copy_btn' onClick={handleCopy} >
           <Image
             src={copied === post.prompt
-              ? '/assets/icons/tick.svg'
-              : '/assets/icons/copy.svg'
+              ? tick
+              : copy
             }
             width={12}
             height={12}

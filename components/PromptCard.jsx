@@ -129,7 +129,7 @@ const PromptCard = ({ post, filterComment, handleTagClick, handleEdit, handleDel
           </Box>
           
           <div className='flex items-center justify-end flex-1 w-full gap-1'>
-            {filterComment.length}
+            {filterComment?.length}
             <MessageIcon
               sx={{ color: blue[500] }}
               className={post.creator._id !== session?.user.id ? 'cursor-pointer' : 'cursor-not-allowed'}

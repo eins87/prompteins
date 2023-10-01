@@ -2,6 +2,7 @@ import Prompt from "@models/prompt";
 import { connectToDB } from "@utils/database";
 
 export const GET = async (req, { params }) => {
+    console.log(params)
     try {
         await connectToDB()
         const prompt = await Prompt.find({creator: params.id}).populate('creator')

@@ -1,6 +1,6 @@
 import PromptCard from "@components/PromptCard";
 
-const Profile = ({ name, desc, data, handleEdit, handleDelete }) => {
+const Profile = ({ name, desc, data, dataComments, handleEdit, handleDelete }) => {
   return (
     <>
       <h1 className="text-left head_text">
@@ -15,6 +15,7 @@ const Profile = ({ name, desc, data, handleEdit, handleDelete }) => {
           <PromptCard
             key={post._id}
             post={post}
+            filterComment={dataComments.filter((comment) => comment.prompt === post._id)}
             handleEdit={() => handleEdit && handleEdit(post)}
             handleDelete={() => handleDelete && handleDelete(post)}
           />
